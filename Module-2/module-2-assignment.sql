@@ -40,3 +40,47 @@ HAVING COUNT(hour) < 2570
 ORDER BY hour;
 
 -- 2.6 Owner Spend and Shopping Days
+SELECT card_no, 
+strftime('%d', owner_spend_date.date) AS "Num Days",
+SUM(spend) AS "Total Spend"
+FROM owner_spend_date
+GROUP BY card_no
+ORDER BY "Total Spend" DESC
+
+-- 2.7 Owner Spend and Shopping Days
+SELECT card_no, 
+strftime('%d', owner_spend_date.date) AS "Num Days",
+SUM(spend) AS "Total Spend",
+AVG(spend) AS "Average Daily Spend"
+FROM owner_spend_date
+GROUP BY card_no
+ORDER BY "Average Daily Spend" DESC
+
+-- 2.8 Zip Spend and Shopping Days
+SELECT owners.zip AS "ZIP Code",
+    COUNT(DISTINCT owner_spend_date.card_no || owner_spend_date.date) AS "Num Owner-Days", 
+    ROUND(SUM(owner_spend_date.spend), 2) AS "Total Spend",  
+    ROUND(SUM(owner_spend_date.spend) / COUNT(DISTINCT owner_spend_date.card_no || owner_spend_date.date), 2) AS "Average Daily Spend"  
+FROM owner_spend_date
+JOIN owners ON owner_spend_date.card_no = owners.card_no 
+GROUP BY owners.zip 
+ORDER BY  "Total Spend" DESC;
+
+-- 2.9 Area Information
+SELECT
+    CASE
+        WHEN owners.zip = '55405' THEN 'Wedge'
+        WHEN owners.zip IN ('55442', '55416', '55408', '55404', '55403') THEN 'Adjacent'
+        ELSE 'Other'
+    END AS "Area",
+   
+    COUNT(DISTINCT owners.card_no) AS "Number of Owners",
+    COUNT(DISTINCT owner_spend_date.card_no || owner_spend_date.date) AS "Total Number of Owner-Days",
+    ROUND(COUNT(DISTINCT owner_spend_date.card_no || owner_spend_date.date) / COUNT(DISTINCT owners.card_no), 2) AS "Average Total Days per Owner",
+    ROUND(SUM(owner_spend_date.spend), 2) AS "Total Spend",
+    ROUND(SUM(owner_spend_date.spend) / COUNT(DISTINCT owners.card_no), 2) AS "Average Total Spend per Owner",
+    ROUND(SUM(owner_spend_date.spend) / COUNT(DISTINCT owner_spend_date.card_no || owner_spend_date.date), 2) AS "Average Total Spend per Owner per Day"
+FROM owner_spend_date
+JOIN owners ON owner_spend_date.card_no = owners.card_no
+GROUP BY "Area"
+ORDER BY "Total Spend" DESC
