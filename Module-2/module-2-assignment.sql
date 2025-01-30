@@ -2,7 +2,7 @@
 SELECT department_date.department ,  departments.dept_name, SUM(spend) AS "Department Spend"
 FROM department_date	
 INNER JOIN departments ON department_date.department = departments.department
-GROUP BY department_date.department
+GROUP BY department_date.department, departments.dept_name
 ORDER BY "Department Spend" DESC;
 -- Question for John. How do we return more columns from the JOIN than what is specified in the SELECT?
 
@@ -11,7 +11,7 @@ SELECT department_date.department ,  departments.dept_name, SUM(spend) AS "Depar
 FROM department_date	
 INNER JOIN departments ON department_date.department = departments.department
 WHERE strftime('%Y', department_date.date) = '2015'
-GROUP BY department_date.department
+GROUP BY department_date.department, departments.dept_name
 ORDER BY "Department Spend" DESC;
 
 -- 2.3 Owners and Sales by Year
