@@ -84,3 +84,16 @@ FROM owner_spend_date
 JOIN owners ON owner_spend_date.card_no = owners.card_no
 GROUP BY "Area"
 ORDER BY "Total Spend" DESC
+
+-- 2.10
+SELECT
+    departments.department AS "Department Number",
+    departments.dept_name AS "Department Name",
+    ROUND(SUM(department_date.spend), 0) AS "Total Department Spend",
+    COUNT(department_date.items) AS "Total Items Purchased by Department",
+    COUNT(DISTINCT department_date.trans) AS "Total Transactions by Department",
+    ROUND(SUM(department_date.spend) / COUNT(department_date.items), 2) AS "Average Item Price in Department"
+FROM department_date
+JOIN departments ON department_date.department = departments.department
+GROUP BY departments.department, departments.dept_name
+ORDER BY "Average Item Price" DESC;
