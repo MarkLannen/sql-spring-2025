@@ -77,10 +77,10 @@ SELECT
     COUNT(DISTINCT owners.card_no) AS "Number of Owners", -- Correct
     COUNT(DISTINCT owner_spend_date.card_no || owner_spend_date.date) AS "Total Number of Owner-Days", -- Correct
     COUNT(DISTINCT owner_spend_date.card_no || owner_spend_date.date) / COUNT(DISTINCT owners.card_no) AS "Average Total Days per Owner",  -- concatenate card_no and date
-
     SUM(owner_spend_date.spend) AS "Total Spend", 
     SUM(owner_spend_date.spend) / COUNT(DISTINCT owners.card_no) AS "Average Total Spend per Owner", 
     SUM(owner_spend_date.spend) / COUNT(DISTINCT owner_spend_date.card_no || owner_spend_date.date) AS "Average Total Spend per Owner per Day" 
+FROM owner_spend_date
 JOIN owners ON owner_spend_date.card_no = owners.card_no
 GROUP BY "Area"
 ORDER BY "Total Spend" DESC;
