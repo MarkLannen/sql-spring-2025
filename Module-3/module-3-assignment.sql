@@ -40,30 +40,54 @@ ORDER BY total_spend DESC
 LIMIT 3
 
 -- 3.5
-WITH avg_spend_55406 AS(
-SELECT t.month AS month, 
-	ROUND (AVG(t.spend)) AS "Avg Spend 05"
-FROM owner_year_month AS t
-INNER JOIN owners as o
-	ON o.card_no = t.card_no
-WHERE o.zip = "55405"
-GROUP BY t.month), 
+
+WITH avg_spend_55405 AS (
+    SELECT 
+        owner_year_month.month AS Month,
+        ROUND(AVG(owner_year_month.spend), 2) AS "Average Spend 55405"
+    FROM 
+        owner_year_month
+    WHERE owner_year_month.card_no IN (
+            SELECT card_no 
+            FROM owners 
+            WHERE zip = '55405'
+        )
+    GROUP BY owner_year_month.month
+),
 avg_spend_55408 AS (
-SELECT t.month, 
-	ROUND (AVG(t.spend)) AS "Avg Spend 08"
-FROM owner_year_month AS t
-INNER JOIN owners AS o
-	ON o.card_no = t.card_no
-WHERE o.zip = "55408"
-GROUP BY t.month),
+    SELECT 
+        owner_year_month.month AS Month,
+        ROUND(AVG(owner_year_month.spend), 2) AS "Average Spend 55408"
+    FROM 
+        owner_year_month
+    WHERE owner_year_month.card_no IN (
+            SELECT card_no 
+            FROM owners 
+            WHERE zip = "55408" 
+        )
+    GROUP BY owner_year_month.month
+),
 avg_spend_55403 AS (
-SELECT t.month ,
-	ROUND(AVG(t.spend)) AS "Avg Spend 03"
-FROM owner_year_month AS t
-INNER JOIN owners AS o
-	ON o.card_no = t.card_no
-WHERE o.zip = "55403"
-GROUP BY t.month)
-SELECT t03.month, "Avg Spend 03", "Avg Spend 05", "Avg Spend 08"
-FROM avg_spend_55403 AS t03
-INNER JOIN avg_spend_55405 AS t05 ON t03.month = t05.month
+    SELECT 
+        owner_year_month.month AS Month,
+        ROUND(AVG(owner_year_month.spend), 2) AS "Average Spend 55403"
+    FROM 
+        owner_year_month
+    WHERE owner_year_month.card_no IN (
+            SELECT card_no 
+            FROM owners 
+            WHERE zip = "55403" 
+        )
+    GROUP BY owner_year_month.month
+)
+
+SELECT 
+    avg_spend_55405.Month AS Month,
+    avg_spend_55405."Average Spend 55405",
+    avg_spend_55408."Average Spend 55408",
+    avg_spend_55403."Average Spend 55403"
+FROM 
+    avg_spend_55405
+JOIN avg_spend_55408 ON avg_spend_55405.Month = avg_spend_55408.Month
+JOIN avg_spend_55403 ON avg_spend_55405.Month = avg_spend_55403.Month
+ORDER BY  avg_spend_55405.Month;
