@@ -119,3 +119,26 @@ JOIN
     cte_total_spend ON owner_spend_date.card_no = cte_total_spend.card_no
 GROUP BY 
     owner_spend_date.card_no, year, month;
+
+-- 3.7
+DROP VIEW IF EXISTS vw_owner_recent;
+
+CREATE VIEW vw_owner_recent AS
+SELECT 
+	card_no,
+	SUM(spend) AS total_spend ,
+	AVG(spend/trans) AS avg_spend_transaction, 
+	COUNT (DISTINCT date) AS num_shopping_dates, 
+	SUM(trans) AS total_trans,
+	MAX(date) AS last_visit
+	
+FROM owner_spend_date
+
+GROUP BY card_no;
+
+SELECT COUNT(DISTINCT card_no) AS owners,
+ROUND(SUM(total_spend)/1000,1) AS spend_k
+FROM vw_owner_recent
+WHERE 5 < total_trans AND
+total_trans < 25 AND
+SUBSTR(last_visit,1,4) IN ('2016','2017')
