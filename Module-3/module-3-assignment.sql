@@ -91,3 +91,31 @@ FROM
 JOIN avg_spend_55408 ON avg_spend_55405.Month = avg_spend_55408.Month
 JOIN avg_spend_55403 ON avg_spend_55405.Month = avg_spend_55403.Month
 ORDER BY  avg_spend_55405.Month;
+
+-- 3.6
+
+DROP TABLE IF EXISTS owner_year_month;
+
+CREATE TEMP TABLE owner_year_month AS
+WITH cte_total_spend AS (
+    SELECT 
+        card_no,
+        SUM(spend) AS total_spend
+    FROM 
+        owner_spend_date
+    GROUP BY 
+        card_no
+)
+SELECT 
+    owner_spend_date.card_no,
+    substr(owner_spend_date.date, 1, 4) AS year,
+    substr(owner_spend_date.date, 6, 2) AS month,
+    SUM(owner_spend_date.spend) AS spend,
+    SUM(owner_spend_date.items) AS items,
+    cte_total_spend.total_spend
+FROM 
+    owner_spend_date
+JOIN 
+    cte_total_spend ON owner_spend_date.card_no = cte_total_spend.card_no
+GROUP BY 
+    owner_spend_date.card_no, year, month;
