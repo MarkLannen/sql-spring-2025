@@ -156,3 +156,8 @@ SELECT
 FROM vw_owner_recent vwr
 JOIN owner_spend_date osd ON vwr.card_no = osd.card_no 
 AND vwr.last_visit = osd.date;
+
+/*
+1. The first query took 177ms and the second took 8ms
+2. The first query uses owner_recent table, which needs to be recreated with each query (SELECT statement. Whereas the second query uses a view that does not need to be recreated with each query.
+*/
