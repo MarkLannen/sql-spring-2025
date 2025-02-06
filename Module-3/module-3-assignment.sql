@@ -142,3 +142,17 @@ FROM vw_owner_recent
 WHERE 5 < total_trans AND
 total_trans < 25 AND
 SUBSTR(last_visit,1,4) IN ('2016','2017')
+
+-- 3.8
+CREATE TABLE owner_recent AS
+SELECT 
+    vwr.card_no,
+    vwr.total_spend,
+    vwr.avg_spend_transaction,
+    vwr.num_shopping_dates,
+    vwr.total_trans,
+    vwr.last_visit,
+    osd.spend AS last_spend
+FROM vw_owner_recent vwr
+JOIN owner_spend_date osd ON vwr.card_no = osd.card_no 
+AND vwr.last_visit = osd.date;
