@@ -136,12 +136,12 @@ FROM owner_spend_date
 
 GROUP BY card_no;
 
-SELECT COUNT(DISTINCT card_no) AS owners,
-ROUND(SUM(total_spend)/1000,1) AS spend_k
-FROM vw_owner_recent
-WHERE 5 < total_trans AND
-total_trans < 25 AND
-SUBSTR(last_visit,1,4) IN ('2016','2017')
+-- SELECT COUNT(DISTINCT card_no) AS owners,
+-- ROUND(SUM(total_spend)/1000,1) AS spend_k
+-- FROM vw_owner_recent
+-- WHERE 5 < total_trans AND
+-- total_trans < 25 AND
+-- SUBSTR(last_visit,1,4) IN ('2016','2017')
 
 -- 3.8
 CREATE TABLE owner_recent AS
