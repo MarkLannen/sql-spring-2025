@@ -161,3 +161,22 @@ AND vwr.last_visit = osd.date;
 1. The first query took 177ms and the second took 8ms
 2. The first query uses owner_recent table, which needs to be recreated with each query (SELECT statement. Whereas the second query uses a view that does not need to be recreated with each query.
 */
+
+-- 3.9
+
+SELECT 
+    owner_recent.card_no,
+    owner_recent.total_spend,
+    owner_recent.avg_spend_transaction,
+    owner_recent.num_shopping_dates,
+    owner_recent.total_trans,
+    owner_recent.last_visit,
+    owner_recent.last_spend,
+    (owner_recent.avg_spend_transaction - owner_recent.last_spend) AS drop_in_spend
+FROM owner_recent
+WHERE owner_recent.last_spend < (owner_recent.avg_spend_transaction / 2) 
+  AND owner_recent.total_spend >= 5000 
+  AND owner_recent.num_shopping_dates >= 270 
+  AND owner_recent.last_visit <= '2017-01-31' AND owner_recent.last_visit >= date('2017-01-31', '-60 days') 
+  AND owner_recent.last_spend > 10
+ORDER BY drop_in_spend DESC, owner_recent.total_spend DESC;
