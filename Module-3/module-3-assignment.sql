@@ -172,11 +172,11 @@ SELECT
     owner_recent.total_trans,
     owner_recent.last_visit,
     owner_recent.last_spend
-
+	
 FROM owner_recent
 WHERE owner_recent.last_spend < (owner_recent.avg_spend_transaction / 2) 
   AND owner_recent.total_spend >= 5000 
   AND owner_recent.num_shopping_dates >= 270 
   AND owner_recent.last_visit <= DATE('2017-01-31', '-60 days') 
   AND owner_recent.last_spend > 10
-ORDER BY owner_recent.total_spend DESC;
+ORDER BY owner_recent.last_spend - owner_recent.avg_spend_transaction ASC, owner_recent.total_spend DESC;
