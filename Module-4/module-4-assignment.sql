@@ -17,3 +17,10 @@ VALUES
     (2014, 'ChickenBreastBoneless/Skinless', 204630.90);
 
 SELECT * FROM product_summary;
+
+-- 4.3
+UPDATE product_summary
+SET year = 2022
+WHERE description = 'AVOCADO Hass Organic';
+
+SELECT * FROM product_summary;
