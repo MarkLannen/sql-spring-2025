@@ -24,3 +24,10 @@ SET year = 2022
 WHERE description = 'AVOCADO Hass Organic';
 
 SELECT * FROM product_summary;
+
+-- 4.4
+DELETE FROM product_summary
+WHERE description = 'BANANA Organic'
+AND year = (SELECT MIN(year) FROM product_summary WHERE description = 'BANANA Organic');
+
+SELECT * FROM product_summary;
