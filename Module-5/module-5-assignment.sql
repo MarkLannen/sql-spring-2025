@@ -18,3 +18,12 @@ JOIN high_spenders ON owner_spend_date.card_no = high_spenders.card_no
 WHERE owner_spend_date.card_no != 3
 GROUP BY owner_spend_date.card_no
 ORDER BY spend DESC;
+
+-- 5.3
+SELECT * 
+FROM department_date
+WHERE department NOT IN (1, 2)
+AND spend BETWEEN 5000 AND 7500
+AND SUBSTR(date, 6, 2) IN ('05', '06', '07', '08')
+ORDER BY spend DESC;
+
