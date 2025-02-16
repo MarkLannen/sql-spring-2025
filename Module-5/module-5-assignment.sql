@@ -27,3 +27,27 @@ AND spend BETWEEN 5000 AND 7500
 AND SUBSTR(date, 6, 2) IN ('05', '06', '07', '08')
 ORDER BY spend DESC;
 
+-- 5.4
+WITH busiest_months AS (
+    SELECT 
+        substr(date, 1, 4) AS year, 
+        substr(date, 6, 2) AS month, 
+        SUM(spend) 
+    FROM date_hour
+    GROUP BY year, month
+    ORDER BY spend DESC
+    LIMIT 4
+)
+SELECT 
+    substr(date, 1, 4) AS year, 
+    substr(date, 6, 2) AS month, 
+    SUM(spend) as spend,
+    department_date.department, 
+    SUM(department_date.spend) 
+FROM department_date
+JOIN busiest_months
+ON substr(department_date.date, 1, 4) = busiest_months.year
+AND substr(department_date.date, 6, 2) = busiest_months.month
+GROUP BY year, month, department_date.department
+HAVING SUM(department_date.spend) > 200000
+ORDER BY year ASC, month ASC, SUM(department_date.spend) DESC;
