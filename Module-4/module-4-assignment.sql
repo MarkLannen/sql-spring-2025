@@ -67,3 +67,12 @@ HAVING
 ORDER BY 
     spend DESC
 LIMIT 10;
+
+-- 4.7
+SELECT 
+    COUNT(*) AS total_rows,
+    COUNT(DISTINCT card_no) AS unique_card_numbers,
+    SUM(total) as total,
+    COUNT(DISTINCT description) AS description
+FROM 
+    `umt-msba.transactions.transArchive_201001_201003`;
