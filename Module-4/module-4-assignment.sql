@@ -76,3 +76,17 @@ SELECT
     COUNT(DISTINCT description) AS description
 FROM 
     `umt-msba.transactions.transArchive_201001_201003`;
+
+    -- 4.8
+    SELECT 
+    EXTRACT(YEAR FROM datetime) AS year,
+    COUNT(*) AS total_rows,
+    COUNT(DISTINCT card_no) AS unique_card_numbers,
+    SUM(total) AS total,
+    COUNT(DISTINCT description) AS description
+FROM 
+    `umt-msba.transactions.*`
+GROUP BY 
+    year
+ORDER BY 
+    year;
