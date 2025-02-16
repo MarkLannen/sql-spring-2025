@@ -31,3 +31,22 @@ WHERE description = 'BANANA Organic'
 AND year = (SELECT MIN(year) FROM product_summary WHERE description = 'BANANA Organic');
 
 SELECT * FROM product_summary;
+
+-- 4.5
+SELECT 
+    `umt-msba.wedge_example.department_date`.department, 
+    `umt-msba.wedge_example.departments`.department, 
+    SUM(`umt-msba.wedge_example.department_date`.spend) AS dept_spend
+FROM 
+    `umt-msba.wedge_example.department_date`
+JOIN 
+    `umt-msba.wedge_example.departments`
+ON 
+    `umt-msba.wedge_example.department_date`.department = `umt-msba.wedge_example.departments`.department
+WHERE 
+    EXTRACT(YEAR FROM `umt-msba.wedge_example.department_date`.date) = 2015
+GROUP BY 
+    `umt-msba.wedge_example.department_date`.department, 
+    `umt-msba.wedge_example.departments`.department
+ORDER BY 
+    dept_spend DESC;
