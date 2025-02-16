@@ -50,3 +50,20 @@ GROUP BY
     `umt-msba.wedge_example.departments`.department
 ORDER BY 
     dept_spend DESC;
+
+-- 4.6
+SELECT 
+    card_no, 
+    EXTRACT(YEAR FROM date) AS year, 
+    EXTRACT(MONTH FROM date) AS month, 
+    SUM(spend) AS spend, 
+    SUM(items) AS items
+FROM 
+    `umt-msba.wedge_example.owner_spend_date`
+GROUP BY 
+    card_no, year, month
+HAVING 
+    spend BETWEEN 750 AND 1250
+ORDER BY 
+    spend DESC
+LIMIT 10;
