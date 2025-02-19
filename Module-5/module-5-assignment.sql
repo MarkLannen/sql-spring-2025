@@ -73,4 +73,29 @@ CREATE TABLE IF NOT EXISTS owner_products (
 conn.commit()
 conn.close()
 
+-- 5.9
+
+-- Insert answer to 5.9 here
+
+-- 5.10
+import sqlite3
+
+conn = sqlite3.connect('owner_prod.db')
+c = conn.cursor()
+
+query = '''
+SELECT description, dept_name, SUM(spend) AS total_spend
+FROM owner_products
+WHERE dept_name LIKE '%groc%'
+GROUP BY description, dept_name
+ORDER BY total_spend DESC
+'''
+
+c.execute(query)
+
+for row in c.fetchall()[:10]:
+    print(row)
+
+conn.close()
+
 
