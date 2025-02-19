@@ -52,7 +52,7 @@ GROUP BY year, month, department_date.department
 HAVING SUM(department_date.spend) > 200000
 ORDER BY year ASC, month ASC, SUM(department_date.spend) DESC;
 
--- 5.7
+-- 5.8
 import sqlite3
 
 conn = sqlite3.connect('owner_prod.db')
