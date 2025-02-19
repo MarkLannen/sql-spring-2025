@@ -56,9 +56,9 @@ ORDER BY year ASC, month ASC, SUM(department_date.spend) DESC;
 import sqlite3
 
 conn = sqlite3.connect('owner_prod.db')
-cur = conn.cursor()
+c = conn.cursor()
 
-cur.execute('''
+c.execute('''
 CREATE TABLE IF NOT EXISTS owner_products (
     owner INTEGER,
     upc INTEGER,
