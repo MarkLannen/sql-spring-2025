@@ -70,7 +70,6 @@ CREATE TABLE IF NOT EXISTS owner_products (
 )
 ''')
 
-
 conn.commit()
 conn.close()
 
