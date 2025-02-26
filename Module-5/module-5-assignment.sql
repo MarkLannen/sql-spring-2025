@@ -52,6 +52,29 @@ GROUP BY year, month, department_date.department
 HAVING SUM(department_date.spend) > 200000
 ORDER BY year ASC, month ASC, SUM(department_date.spend) DESC;
 
+-- 5.5
+SELECT
+    owners.zip,
+    COUNT(DISTINCT owners.card_no) AS num_owners,
+    SUM(owner_spend_date.spend) / COUNT(DISTINCT owners.card_no) AS avg_spent_per_owner,
+    SUM(owner_spend_date.spend) / COUNT(owner_spend_date.card_no) AS avg_spent_per_transaction
+FROM
+    owners
+JOIN
+    owner_spend_date ON owners.card_no = owner_spend_date.card_no
+WHERE
+    owners.zip IN (
+        SELECT zip
+        FROM owners
+        GROUP BY zip
+        HAVING COUNT(DISTINCT card_no) >= 100
+    )
+GROUP BY
+    owners.zip
+ORDER BY
+    avg_spent_per_transaction DESC
+LIMIT 5;
+
 -- 5.8
 import sqlite3
 
