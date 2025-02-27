@@ -51,6 +51,8 @@ ORDER BY total_spend DESC
 
 c.execute(query)
 
+rows = []
+
 for i in range(10):
     print(rows[i])
 
